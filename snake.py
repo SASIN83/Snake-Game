@@ -1,7 +1,6 @@
 import math
 import random
 import pygame
-import random
 import tkinter as tk
 from tkinter import messagebox
 
@@ -17,8 +16,8 @@ class cube():
     w = 500
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
         self.pos = start
-        self.dirnx = dirnx
-        self.dirny = dirny # "L", "R", "U", "D"
+        self.dirnx = dirnx #"L", "R"
+        self.dirny = dirny #"U", "D"
         self.color = color
 
     def move(self, dirnx, dirny):
@@ -62,19 +61,19 @@ class snake():
             keys = pygame.key.get_pressed()
 
             for key in keys:
-                if keys[pygame.K_LEFT]:
+                if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                     self.dirnx = -1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_RIGHT]:
+                elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                     self.dirnx = 1
                     self.dirny = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_UP]:
+                elif keys[pygame.K_UP] or keys[pygame.K_w]:
                     self.dirny = -1
                     self.dirnx = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
-                elif keys[pygame.K_DOWN]:
+                elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
                     self.dirny = 1
                     self.dirnx = 0
                     self.turns[self.head.pos[:]] = [self.dirnx,self.dirny]
@@ -140,8 +139,8 @@ def drawGrid(w, rows, surface):
     x = 0
     y = 0
     for l in range(rows):
-        x = x + sizeBtwn
-        y = y +sizeBtwn
+        x += sizeBtwn
+        y += sizeBtwn
 
         pygame.draw.line(surface, (255,255,255), (x, 0),(x,w))
         pygame.draw.line(surface, (255,255,255), (0, y),(w,y))
@@ -177,7 +176,7 @@ def main():
         s.move()
         headPos = s.head.pos
         if headPos[0] >= 20 or headPos[0] < 0 or headPos[1] >= 20 or headPos[1] < 0:
-            print("Score:", len(s.body))
+            print(f"Score:{len(s.body)}")
             s.reset((10, 10))
 
         if s.body[0].pos == snack.pos:
@@ -186,7 +185,7 @@ def main():
             
         for x in range(len(s.body)):
             if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])):
-                print("Score:", len(s.body))
+                print(f"Score: {len(s.body)}")
                 s.reset((10,10))
                 break
                     
